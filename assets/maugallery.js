@@ -154,7 +154,8 @@
         }
       });
       next =
-        imagesCollection[index] ||
+        // Bug #2 : Ajouté - 1 à index pour afficher l'image précédente
+        imagesCollection[index - 1] ||
         imagesCollection[imagesCollection.length - 1];
       $(".lightboxImage").attr("src", $(next).attr("src"));
     },
@@ -192,7 +193,8 @@
           index = i;
         }
       });
-      next = imagesCollection[index] || imagesCollection[0];
+        // Bug #2 : Ajouté + 1 à index pour afficher l'image suivante
+        next = imagesCollection[index + 1] || imagesCollection[0];
       $(".lightboxImage").attr("src", $(next).attr("src"));
     },
     createLightBox(gallery, lightboxId, navigation) {
@@ -240,7 +242,8 @@
         return;
       }
       $(".active-tag").removeClass("active active-tag");
-      $(this).addClass("active-tag");
+      // Bug #1 : Ajouté classe "active" pour avoir le background-color sur le filtre sélectionné
+      $(this).addClass("active active-tag");
 
       var tag = $(this).data("images-toggle");
 
