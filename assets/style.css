@@ -18,22 +18,22 @@ body {
 	align-items: center;
 }
 
-.top-header .name {
+h1 {
 	font-size: 26px;
 }
 
-.nav ul {
+nav ul {
 	display: flex;
 	list-style-type: none;
 	font-size: 14px;
 	margin-bottom: 0;
 }
 
-.nav li {
+nav li, .nav li {
 	padding-inline: 10px;
 }
 
-.nav a {
+nav a {
 	text-decoration: none;
 	color: #000
 }
@@ -83,19 +83,21 @@ body {
 	font-family: 'Spectral';
 	font-weight: 800;
 	font-style: italic;
-	width: 60%;
+	font-size: 1rem !important;
+	width: 63% !important;
+	line-height: 1.2;
 }
+
 #about-me p {
 	width: 80%;
 	font-size: 14px;
+	margin-bottom: 0.5rem;
 }
 
-#gallery {
-	/*	min-height: 100vh; */
-}
 .title{
 	text-align: center;
 	padding-block: 2em;
+	font-size: 1.75rem;
 }
 .gallery .nav {
 	justify-content: center;
@@ -147,8 +149,9 @@ body {
 	font-family: Spectral;
 	font-style: italic;
 	font-weight: 300;
-
+	line-height: 1.2;
 }
+
 .quote__author {
 	font-family: Spectral;
 	font-weight: 800;
@@ -188,6 +191,15 @@ body {
 	flex-direction: column;
 	justify-content: space-between;
 	z-index: 1;
+}
+
+.service__price p {
+	margin-bottom: 0;
+}
+
+.price {
+	font-size: 1.5rem;
+	margin-bottom: 0.5rem !important;
 }
 
 #contact {
@@ -242,6 +254,15 @@ form textarea {
 input[type="submit"] {
 	background-color: #BEB45A;
 	padding: .5em 1em
+}
+@media (min-width: 1200px) {
+	.quote__text {
+		font-size: 2.5rem;
+	}
+
+	#contact h2 {
+		font-size: 1.75rem;
+	}
 }
 
 @media all and (max-width: 1180px) {
@@ -324,11 +345,11 @@ input[type="submit"] {
 		flex-direction: column;
 		padding-inline: 0;
 	}
-	.top-header .nav, .top-header .nav ul {
+	.top-header nav, .top-header nav ul {
 		width: 100%;
 		padding: 0 0 0 0;
 	}
-	.top-header .nav li {
+	.top-header nav li {
 		flex: 1;
 		padding-block: 1em;
 		text-align: center;
