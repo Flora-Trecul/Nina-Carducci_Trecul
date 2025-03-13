@@ -114,9 +114,13 @@
       }
     },
     openLightBox(element, lightboxId) {
+      // Ajout d'un srcset avec la version webp et la version jpg
+      const jpgSrc = element.attr("src")
+      //const webpSrc = jpgSrc.replace(/\.jpg$/, ".webp");
       $(`#${lightboxId}`)
         .find(".lightboxImage")
-        .attr("src", element.attr("src"));
+        .attr("src", jpgSrc)
+        //.attr("srcset", webpSrc + ", " + jpgSrc);
       $(`#${lightboxId}`).modal("toggle");
     },
     prevImage() {
