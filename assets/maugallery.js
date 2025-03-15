@@ -50,7 +50,8 @@
   };
   $.fn.mauGallery.listeners = function(options) {
     $(".gallery-item").on("click", function() {
-      if (options.lightBox && $(this).prop("tagName") === "IMG") {
+      // img intégrées dans des éléments PICTURE pour gérer les formats webp/jpg et le responsive sizing
+      if (options.lightBox && $(this).prop("tagName") === "PICTURE") {
         $.fn.mauGallery.methods.openLightBox($(this), options.lightboxId);
       } else {
         return;
@@ -114,38 +115,40 @@
       }
     },
     openLightBox(element, lightboxId) {
-      // Ajout d'un srcset avec la version webp et la version jpg
-      const jpgSrc = element.attr("src")
-      //const webpSrc = jpgSrc.replace(/\.jpg$/, ".webp");
+      // On récupère les attributs src et alt de l'élément img à l'intérieur de l'élément picture
+      const jpgSrc = element.find("img").attr("src")
+      const imgAlt = "Image affichée dans la modale au clic : " + element.find("img").attr("alt")
       $(`#${lightboxId}`)
         .find(".lightboxImage")
         .attr("src", jpgSrc)
-        //.attr("srcset", webpSrc + ", " + jpgSrc);
+        .attr("alt", imgAlt)
       $(`#${lightboxId}`).modal("toggle");
     },
+    // Modification de prevImage et nextImage pour traiter les nouveaux éléments picture
+    // Attribut alt de la modale = attribut alt de l'image affichée
     prevImage() {
       let activeImage = null;
-      $("img.gallery-item").each(function() {
-        if ($(this).attr("src") === $(".lightboxImage").attr("src")) {
-          activeImage = $(this);
+      $("picture.gallery-item").each(function() {
+        if ($(this).find("img").attr("src") === $(".lightboxImage").attr("src")) {
+          activeImage = $(this).children("img");
         }
       });
       let activeTag = $(".tags-bar span.active-tag").data("images-toggle");
       let imagesCollection = [];
       if (activeTag === "all") {
         $(".item-column").each(function() {
-          if ($(this).children("img").length) {
-            imagesCollection.push($(this).children("img"));
+          if ($(this).children("picture").length) {
+            imagesCollection.push($(this).children("picture").find("img"));
           }
         });
       } else {
         $(".item-column").each(function() {
           if (
             $(this)
-              .children("img")
+              .children("picture")
               .data("gallery-tag") === activeTag
           ) {
-            imagesCollection.push($(this).children("img"));
+            imagesCollection.push($(this).children("picture").find("img"));
           }
         });
       }
@@ -162,30 +165,31 @@
         imagesCollection[index - 1] ||
         imagesCollection[imagesCollection.length - 1];
       $(".lightboxImage").attr("src", $(next).attr("src"));
+      $(".lightboxImage").attr("alt", "Image affichée dans la modale au clic : " +  $(next).attr("alt"));
     },
     nextImage() {
       let activeImage = null;
-      $("img.gallery-item").each(function() {
-        if ($(this).attr("src") === $(".lightboxImage").attr("src")) {
-          activeImage = $(this);
+      $("picture.gallery-item").each(function() {
+        if ($(this).find("img").attr("src") === $(".lightboxImage").attr("src")) {
+          activeImage = $(this).children("img");
         }
       });
       let activeTag = $(".tags-bar span.active-tag").data("images-toggle");
       let imagesCollection = [];
       if (activeTag === "all") {
         $(".item-column").each(function() {
-          if ($(this).children("img").length) {
-            imagesCollection.push($(this).children("img"));
+          if ($(this).children("picture").length) {
+            imagesCollection.push($(this).children("picture").find("img"));
           }
         });
       } else {
         $(".item-column").each(function() {
           if (
             $(this)
-              .children("img")
+              .children("picture")
               .data("gallery-tag") === activeTag
           ) {
-            imagesCollection.push($(this).children("img"));
+            imagesCollection.push($(this).children("picture").find("img"));
           }
         });
       }
@@ -200,6 +204,7 @@
         // Bug #2 : Ajouté + 1 à index pour afficher l'image suivante
         next = imagesCollection[index + 1] || imagesCollection[0];
       $(".lightboxImage").attr("src", $(next).attr("src"));
+      $(".lightboxImage").attr("alt", "Image affichée dans la modale au clic : " +  $(next).attr("alt"));
     },
     createLightBox(gallery, lightboxId, navigation) {
       gallery.append(`<div class="modal fade" id="${
@@ -211,13 +216,13 @@
                             ${
                               navigation
                                 ? '<div class="mg-prev" style="cursor:pointer;position:absolute;top:50%;left:-15px;background:white;"><</div>'
-                                : '<span style="display:none;" />'
+                                : '<span style="display:none;">'
                             }
-                            <img class="lightboxImage img-fluid" alt="Contenu de l'image affichée dans la modale au clique"/>
+                            <img class="lightboxImage img-fluid">
                             ${
                               navigation
                                 ? '<div class="mg-next" style="cursor:pointer;position:absolute;top:50%;right:-15px;background:white;}">></div>'
-                                : '<span style="display:none;" />'
+                                : '<span style="display:none;">'
                             }
                         </div>
                     </div>
